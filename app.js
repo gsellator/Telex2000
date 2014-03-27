@@ -11,13 +11,14 @@ app.use(express.bodyParser());
 
 //Read Little Printer direct API code in '/.printer'
 var printer = __dirname + '/.printer';
+var printerApiCode = "";
 fs.readFile(printer, 'utf8', function (err, data) {
     if (err) {
         console.log('Error: ' + err);
         return;
     }
     data = JSON.parse(data);
-    var printerApiCode = data.code;
+    printerApiCode = data.code;
 });
 
 // Routes

@@ -37,6 +37,10 @@ module.exports = function(grunt) {
                 src: 'package.json',
                 dest: 'pkg/',
             },
+            server0: {
+                src: '.printer',
+                dest: 'pkg/',
+            },
             server1: {
                 src: 'app.js',
                 dest: 'pkg/',

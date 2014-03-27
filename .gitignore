@@ -1,4 +1,6 @@
+.ftppass
 .printer
 node_modules/
 pkg/
 start.sh
+
