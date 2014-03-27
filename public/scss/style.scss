@@ -1,0 +1,160 @@
+@import "variables";
+
+h1, h2{
+    font-family: 'futura-pt', sans-serif;
+    font-weight: normal;
+    text-transform: uppercase;
+}
+
+*{
+    font-family: 'futura-pt', sans-serif;
+    font-weight: normal;
+}
+
+html, body, input, button, select, textarea, table, h3, h4, h5, h6 {
+    font-family: 'futura-pt', sans-serif;
+    font-weight: normal;
+    color: $dark-grey;
+    font-size: 16px;
+}
+
+::selection {
+    color: #eee;
+    background-color: $dark-blue;
+}
+
+a { color: $fluo-blue; text-decoration: none;}
+
+.nav{
+    position: fixed;
+    background-color: white;
+    top: 0;
+    right: 0;
+    display: block;
+    list-style: none;
+    width: 88px;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    width: 100%;
+    border-bottom: solid grey 1px;
+
+    li{
+        padding: 0;
+        width: 140px;
+        display: inline-block;
+
+        &.current{
+            background-color: $dark-blue;
+            color: white;
+        }
+    }
+}
+
+h1{
+    font-size: 8vw;
+    margin: 0;
+}
+
+#container {
+    margin: 0 auto;
+    width: 800px;
+}
+
+section {
+    text-align: center;
+}
+
+.btn {
+    display: inline-block;
+    margin: 0;
+    text-decoration: none;
+    cursor: pointer;
+    padding: 0 12px;
+    height: 38px;
+    line-height: 34px;
+    min-width: 88px;
+    border-radius: 4px;
+    text-align: center;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    color: white;
+    border: 1px solid $grey-6;
+    background-color: $grey-6;
+    border-color: $grey-6;
+    &:disabled{opacity: 0.4;}
+
+    &:hover,
+    &:focus {
+        background-color: transparent;
+        border-color: $grey-6;
+        color: white;
+        text-decoration: none;
+        outline:0; 
+        &:disabled{background-color: $grey-6;}
+    }
+
+    &:active{background-color: $medium-grey;}
+
+    &.dark{
+        background-color: $dark-grey;
+        border-color: $dark-grey;
+
+        &:hover, 
+        &:focus {
+            background-color: $grey-6;
+            border-color: $grey-6;
+            color: white;
+            text-decoration: none;
+        }
+
+        &:active{background-color: $grey-5;}
+    }
+}
+
+.form{
+    display: inline-block;
+    max-width:  600px;
+    margin-top: 10px;
+    background: $dark-grey;
+    z-index: 2001;
+    border-radius: 16px;
+    text-align: center;
+    padding: 20px;
+
+    .btn{margin-top: 10px;}
+    h1{color: white; margin: 0; font-size: 32px;}
+    h4{color: white;}
+
+    .field{
+        position: relative;
+        margin: 0 10%;
+        text-align: left;
+
+        input, textarea{
+            margin: 6px 0;
+            padding: 8px;
+            width: 100%;
+            max-width: 100%;
+            font-size: 19px;
+            color: white;
+            background: transparent;
+            border: none;
+            background: rgba(255, 255, 255, 0.1);
+            input{height: 40px;}
+
+            &:focus {
+                outline: 0;
+                background-color: rgba(255, 255, 255, 0.2);
+                border: none;
+            }
+        }
+    }
+
+    .input-underline{
+        height: 1px; 
+        background-color: rgb(206, 214, 218);
+        background-color: $grey-1;
+    }
+}

@@ -1,0 +1,35 @@
+<%- include partials/header.ejs %>
+
+<section>
+    <form class="form" name="loginForm" action="" method=POST>
+        <div>
+            <h1>Telex 2000</h1>
+            <h4>Vos telex, anonymes ou non, sur le bureau de votre préfet dans moins de 3 minutes.</h4>
+        </div>
+        <div class="field">
+            <input type="text" 
+                   class="name" 
+                   name="name" 
+                   placeholder="Nom (optionnel)" 
+                   autocomplete="off" 
+                   spellcheck="false" 
+                   autocorrect="off" 
+                   autocapitalize="off" 
+                   maxlength="264">
+            <div class="input-underline"></div>
+        </div>
+        <div class="field">
+            <textarea rows="4" 
+                      class="telex" 
+                      name="telex" 
+                      placeholder="Telex" 
+                      autocomplete="off" 
+                      spellcheck="true" 
+                      autocorrect="on" 
+                      autocapitalize="on" 
+                      maxlength="2048"></textarea>
+        </div>
+        <button type="submit" class="btn">Envoyer</button>
+    </form>
+
+</section>
