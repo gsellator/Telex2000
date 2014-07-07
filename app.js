@@ -11,14 +11,16 @@ app.use(express.bodyParser());
 
 //Read Little Printer direct API code in '/.printer'
 var printer = __dirname + '/.printer';
-var printerApiCode = "";
+var bergapi = "";
+var yoapi = "";
 fs.readFile(printer, 'utf8', function (err, data) {
     if (err) {
         console.log('Error: ' + err);
         return;
     }
     data = JSON.parse(data);
-    printerApiCode = data.code;
+    bergapi = data.bergapi;
+    yoapi = data.yoapi;
 });
 
 // Routes
@@ -46,7 +48,7 @@ app.post('/', function(req, res) {
         }
 
         var options = {
-            url: 'http://remote.bergcloud.com/playground/direct_print/' + printerApiCode.toString(),
+            url: 'http://remote.bergcloud.com/playground/direct_print/' + bergapi.toString(),
             method: 'POST',
             body: post_data
         };
@@ -64,6 +66,45 @@ app.post('/', function(req, res) {
         request(options, callback);
     }
 });
+
+app.get('/yo', function(req, res) {
+    res.render('yo.ejs');
+});
+
+app.get('/yoall', function(req, res) {
+    var options = {
+        url: 'http://www.justyo.co/yoall/',// + printerApiCode.toString(),
+        method: 'POST',
+        form:    { api_token: "e71d95a3-38c0-7e28-0a38-d28867ec91cd" }
+    };
+    request(options, function(error, response, body){
+        console.log(body);
+    });
+
+    res.redirect('/');
+});
+
+app.get('/callback', function(req, res) {
+    console.log(req.query.username);
+
+    if (req.query.username != undefined) {
+        request({
+            url: 'http://remote.bergcloud.com/playground/direct_print/' + bergapi.toString(),
+            method: 'POST',
+            body: 'html=<html><head><meta charset="utf-8"></head><body><h1>Yo From ' + req.query.username + '</h1></body></html>'
+        }, function(error, response, body) {
+            if (!error && response.statusCode == 200) {
+                console.log(body);
+            }
+            else{
+                console.log('KO');
+            }
+        });
+    }
+
+    res.redirect('/');
+});
+
 
 app.use(function(req, res, next){
     res.setHeader('Content-Type', 'text/plain');
