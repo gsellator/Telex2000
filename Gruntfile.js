@@ -52,6 +52,10 @@ module.exports = function(grunt) {
             server5: {
                 src: 'views/**/*',
                 dest: 'pkg/',
+            },
+            server6: {
+                src: 'model.js',
+                dest: 'pkg/',
             }
         },
 

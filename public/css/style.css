@@ -31,6 +31,8 @@ body {
 * {
   font-family: 'futura-pt', sans-serif;
   font-weight: 300;
+  color: gray;
+  font-size: 18px;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
@@ -238,8 +240,6 @@ section h1 {
 }
 
 section .txt {
-  color: gray;
-  font-size: 18px;
   margin-top: 20px;
 }
 
@@ -271,4 +271,10 @@ section .form .field input:focus,
 section .form .field textarea:focus {
   outline: 0;
   background-color: white;
+}
+
+section .top5 {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: solid 1px;
 }

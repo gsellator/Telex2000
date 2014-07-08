@@ -1,5 +1,19 @@
 var express = require('express'),
-    request = require('request');
+    request = require('request'),
+    mongoose = require('mongoose'),
+    model = require('./model');
+
+var uristring = 'mongodb://localhost/telex';
+
+// Makes connection asynchronously. Mongoose will queue up database
+// operations and release them when the connection is complete.
+mongoose.connect(uristring, function (err, res) {
+    if (err) { 
+        console.log ('ERROR connecting to: ' + uristring + '. ' + err);
+    } else {
+        console.log ('Succeeded connected to: ' + uristring);
+    }
+});
 
 // App Setup
 var app = express(),
@@ -25,7 +39,11 @@ fs.readFile(printer, 'utf8', function (err, data) {
 
 // Routes
 app.get('/', function(req, res) {
-    res.render('index.ejs');
+    model.getTelexs(function(telexs){
+        model.getYos(function(yos){
+            res.render('index.ejs', {telexs: telexs, yos: yos});
+        });
+    });
 });
 
 app.post('/', function(req, res) {
@@ -61,7 +79,11 @@ app.post('/', function(req, res) {
                 res.redirect('/');
             }
         }
-        request(options, callback);
+
+        var now = new Date();
+        model.createTelex(now, req.body.name, req.body.telex, function(result){
+            request(options, callback);
+        });
     }
 });
 
@@ -79,23 +101,23 @@ app.get('/yoall', function(req, res) {
 });
 
 app.get('/yo', function(req, res) {
-    console.log(req.query.username);
-
-    if (req.query.username != undefined) {
-        request({
-            url: 'http://remote.bergcloud.com/playground/direct_print/' + bergapi.toString(),
-            method: 'POST',
-            body: 'html=<html><head><meta charset="utf-8"></head><body><h1>Yo From ' + req.query.username + '</h1></body></html>'
-        }, function(error, response, body) {
-            if (!error && response.statusCode == 200) {
-                console.log('Yo : ' + body);
-            }
-            else{
-                console.log('Yo : KO | ' + body);
-            }
+    if (req.query.username != undefined){
+        var now = new Date();
+        model.createYo(now, req.query.username, function(result){
+            request({
+                url: 'http://remote.bergcloud.com/playground/direct_print/' + bergapi.toString(),
+                method: 'POST',
+                body: 'html=<html><head><meta charset="utf-8"></head><body><h1>Yo From ' + req.query.username + '</h1></body></html>'
+            }, function(error, response, body) {
+                if (!error && response.statusCode == 200) {
+                    console.log('Yo : ' + body);
+                }
+                else{
+                    console.log('Yo : KO | ' + body);
+                }
+            });
         });
     }
-
     res.redirect('/');
 });
 

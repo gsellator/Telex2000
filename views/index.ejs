@@ -40,6 +40,12 @@
                     <button type="submit" class="btn">Envoyer</button>
                 </form>
 
+                <div class="top5">
+                    <h1 style="margin-bottom: 20px;">Les 5 derniers telex</h1>
+                    <% for(var i=0; i<telexs.length; i++) {%>
+                    <div><%= telexs[i].name %> | <%= telexs[i].telex %></div>
+                    <% } %>
+                </div>
             </section>
 
             <section>
@@ -49,6 +55,13 @@
                     Vous pouvez aussi envoyer un Yo à tous les abonnés de la coloc :
                 </div>
                 <a href="/yoall" class="btn">Yo !</a>
+
+                <div class="top5">
+                    <h1 style="margin-bottom: 20px;">Les 5 derniers Yo's</h1>
+                    <% for(var i=0; i<yos.length; i++) {%>
+                    <div><%= yos[i].username %></div>
+                    <% } %>
+                </div>
             </section>
 
 

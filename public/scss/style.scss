@@ -9,6 +9,8 @@ html, body{ height: 100%; }
 *{
     font-family: 'futura-pt', sans-serif;
     font-weight: 300;
+    color: $grey-tlx;
+    font-size: 18px;
     box-sizing: border-box;    
 }
 
@@ -149,8 +151,6 @@ section{
     h1{color: $grey-tlx; margin: 0; font-size: 32px;}
 
     .txt{
-        color: $grey-tlx;
-        font-size: 18px;
         margin-top: 20px;
     }
 
@@ -178,5 +178,11 @@ section{
                 }
             }
         }
+    }
+
+    .top5{
+        margin-top: 20px;
+        padding-top: 20px;
+        border-top: solid 1px;
     }
 }
