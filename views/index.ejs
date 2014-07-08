@@ -1,35 +1,57 @@
-<%- include partials/head.ejs %>
+<!doctype html>
+<html lang="fr">
+    <%- include partials/head.ejs %>
 
-<section>
-    <form class="form" name="loginForm" action="" method=POST>
-        <div>
-            <h1>Telex 2000</h1>
-            <h4>Vos telex, anonymes ou non, sur le bureau de votre préfet dans moins de 3 minutes.</h4>
-        </div>
-        <div class="field">
-            <input type="text" 
-                   class="name" 
-                   name="name" 
-                   placeholder="Nom (optionnel)" 
-                   autocomplete="off" 
-                   spellcheck="false" 
-                   autocorrect="off" 
-                   autocapitalize="off" 
-                   maxlength="264">
-            <div class="input-underline"></div>
-        </div>
-        <div class="field">
-            <textarea rows="4" 
-                      class="telex" 
-                      name="telex" 
-                      placeholder="Telex" 
-                      autocomplete="off" 
-                      spellcheck="true" 
-                      autocorrect="on" 
-                      autocapitalize="on" 
-                      maxlength="2048"></textarea>
-        </div>
-        <button type="submit" class="btn">Envoyer</button>
-    </form>
+    <body>
+        <%- include partials/header.ejs %>
+        <div id="container">
+            <section>
+                <h1>Envoyez des choses sur l'imprimante de la coloc</h1>
+            </section>
 
-</section>
+
+            <section>
+                <form class="form" name="loginForm" action="" method=POST>
+                    <div>
+                        <h1 style="margin-bottom: 20px;">Envoyer un telex</h1>
+                    </div>
+                    <div class="field">
+                        <input type="text" 
+                               class="name" 
+                               name="name" 
+                               placeholder="Nom (optionnel)" 
+                               autocomplete="off" 
+                               spellcheck="false" 
+                               autocorrect="off" 
+                               autocapitalize="off" 
+                               maxlength="264">
+                    </div>
+                    <div class="field">
+                        <textarea rows="4" 
+                                  class="telex" 
+                                  name="telex" 
+                                  placeholder="Telex" 
+                                  autocomplete="off" 
+                                  spellcheck="true" 
+                                  autocorrect="on" 
+                                  autocapitalize="on" 
+                                  maxlength="2048"></textarea>
+                    </div>
+                    <button type="submit" class="btn">Envoyer</button>
+                </form>
+
+            </section>
+
+            <section>
+                <h1>Envoyer un Yo</h1>
+                <div class="txt">
+                    Ajoutez COLOCPREF dans votre appli <a href="justyo.co">Yo</a> et lachez-vous !<br><br>
+                    Vous pouvez aussi envoyer un Yo à tous les abonnés de la coloc :
+                </div>
+                <a href="/yoall" class="btn">Yo !</a>
+            </section>
+
+
+        </div>
+    </body>
+</html>

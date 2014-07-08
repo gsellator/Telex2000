@@ -33,17 +33,15 @@ app.post('/', function(req, res) {
     console.log(req.body.telex);
 
     if (req.body.telex == "") {
-        console.log('Empty Message');
+        console.log('Tlx : Empty');
         res.redirect('/');
     } else {
         var post_data = "";
 
         if (req.body.name == "") {
-            console.log('Anonymous message');
             post_data = 'html=<html><head><meta charset="utf-8"></head><body><h1>Telex 2000 Anonyme :</h1><p>' + req.body.telex + '</p></body></html>';
         }
         else {
-            console.log('Signed message');
             post_data = 'html=<html><head><meta charset="utf-8"></head><body><h1>Telex 2000 de ' + req.body.name + ' :</h1><p>' + req.body.telex + '</p></body></html>';
         }
 
@@ -55,20 +53,16 @@ app.post('/', function(req, res) {
 
         function callback(error, response, body) {
             if (!error && response.statusCode == 200) {
-                console.log(body);
+                console.log('Tlx : ' + body);
                 res.redirect('/');
             }
             else{
-                console.log('KO');
+                console.log('Tlx : KO | ' + body);
                 res.redirect('/');
             }
         }
         request(options, callback);
     }
-});
-
-app.get('/yo', function(req, res) {
-    res.render('yo.ejs');
 });
 
 app.get('/yoall', function(req, res) {
@@ -78,13 +72,13 @@ app.get('/yoall', function(req, res) {
         form:    { api_token: "e71d95a3-38c0-7e28-0a38-d28867ec91cd" }
     };
     request(options, function(error, response, body){
-        console.log(body);
+        console.log('YoAll : ' + body);
     });
 
     res.redirect('/');
 });
 
-app.get('/callback', function(req, res) {
+app.get('/yo', function(req, res) {
     console.log(req.query.username);
 
     if (req.query.username != undefined) {
@@ -94,10 +88,10 @@ app.get('/callback', function(req, res) {
             body: 'html=<html><head><meta charset="utf-8"></head><body><h1>Yo From ' + req.query.username + '</h1></body></html>'
         }, function(error, response, body) {
             if (!error && response.statusCode == 200) {
-                console.log(body);
+                console.log('Yo : ' + body);
             }
             else{
-                console.log('KO');
+                console.log('Yo : KO | ' + body);
             }
         });
     }

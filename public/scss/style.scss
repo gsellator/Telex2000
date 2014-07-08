@@ -1,160 +1,182 @@
 @import "variables";
 
-h1, h2{
-    font-family: 'futura-pt', sans-serif;
-    font-weight: normal;
-    text-transform: uppercase;
-}
+::selection {color: #eee; background-color: $dark-blue;}
+a {color: $grey-tlx; text-decoration: none;}
+body{background-color: $grey-0;}
+.noty{display: none !important;}
+html, body{ height: 100%; }
 
 *{
     font-family: 'futura-pt', sans-serif;
-    font-weight: normal;
+    font-weight: 300;
+    box-sizing: border-box;    
 }
 
 html, body, input, button, select, textarea, table, h3, h4, h5, h6 {
     font-family: 'futura-pt', sans-serif;
-    font-weight: normal;
+    font-weight: 300;
     color: $dark-grey;
-    font-size: 16px;
+    font-size: 14px;
+    margin: 0;
 }
 
-::selection {
-    color: #eee;
-    background-color: $dark-blue;
+h1, h2{
+    font-family: 'futura-pt', sans-serif;
+    font-weight: 200;
+    text-transform: uppercase;
+}
+h1{font-size: 32px;}
+h2{font-size: 35px;}
+h3{font-size: 28px;font-weight: 200;}
+
+h4{
+    text-align: center;
+    font-style: italic;
+    font-size: 20px;
+    margin: 30px 0 30px 0;
 }
 
-a { color: $fluo-blue; text-decoration: none;}
-
-.nav{
-    position: fixed;
-    background-color: white;
-    top: 0;
-    right: 0;
-    display: block;
+ul{
     list-style: none;
-    width: 88px;
-    margin: 0;
-    padding: 0;
-    text-align: center;
-    width: 100%;
-    border-bottom: solid grey 1px;
-
-    li{
-        padding: 0;
-        width: 140px;
-        display: inline-block;
-
-        &.current{
-            background-color: $dark-blue;
-            color: white;
-        }
-    }
+    margin: 0; padding: 0;
+    li{padding: 0;}
 }
 
-h1{
-    font-size: 8vw;
-    margin: 0;
+#container, header .content{
+    max-width: $break-xlarge;
+    min-width: 320px;
+    margin: auto;
+    @media (min-width: $break-xlarge){ border-left: solid $grey-4 1px; border-right: solid $grey-4 1px;}
 }
 
-#container {
-    margin: 0 auto;
-    width: 800px;
-}
-
-section {
-    text-align: center;
+#container{
+    overflow: hidden;
+    min-height: 100%;
+    margin-top: -44px;
+    //    padding: 44px 0 120px 0;
+    padding: 44px 0 0 0;
+    position: relative;
 }
 
 .btn {
     display: inline-block;
-    margin: 0;
+    vertical-align: top;
     text-decoration: none;
     cursor: pointer;
     padding: 0 12px;
     height: 38px;
-    line-height: 34px;
-    min-width: 88px;
+    min-width: 50px;
     border-radius: 4px;
     text-align: center;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
-    color: white;
-    border: 1px solid $grey-6;
-    background-color: $grey-6;
-    border-color: $grey-6;
+    color: $grey-tlx;
+    border: 1px solid $grey-tlx;
+    background-color: transparent;
+    line-height: 34px;
     &:disabled{opacity: 0.4;}
+    &:active{background-color: white;}
 
     &:hover,
     &:focus {
-        background-color: transparent;
-        border-color: $grey-6;
-        color: white;
+        background-color: $grey-1;
         text-decoration: none;
         outline:0; 
         &:disabled{background-color: $grey-6;}
     }
+}
 
-    &:active{background-color: $medium-grey;}
+header{
+    z-index: 1;
+    position: relative;
 
-    &.dark{
-        background-color: $dark-grey;
-        border-color: $dark-grey;
+    .content{
+        position: relative;
+        background-color: $grey-0;
+        border-bottom: solid $grey-6 1px;
+        height: 44px;
+        img{height: 44px;}
 
-        &:hover, 
-        &:focus {
-            background-color: $grey-6;
-            border-color: $grey-6;
-            color: white;
-            text-decoration: none;
+        .badge{
+            border-right: solid $grey-6 1px;
+            padding-right: 4px;
+            margin-right: 2px;
+
+            @media (max-width: 400px){display: none;}
         }
 
-        &:active{background-color: $grey-5;}
+        .fb{
+            height: 43px;
+            float: right;
+            padding: 0 20px;
+            border-left: solid $grey-6 1px;
+            &:hover{background-color: $grey-1;}
+            &:active{background-color: white;}
+        }
     }
 }
 
-.form{
-    display: inline-block;
-    max-width:  600px;
-    margin-top: 10px;
-    background: $dark-grey;
-    z-index: 2001;
-    border-radius: 16px;
+section{
+    margin: auto;
+    background-color: #e5e5e5;
+    max-width:  800px;
     text-align: center;
-    padding: 20px;
+    padding: 30px 20px;
+    margin-bottom: 40px;
+    border-radius: 4px;
+    border: solid $grey-6 1px;
 
-    .btn{margin-top: 10px;}
-    h1{color: white; margin: 0; font-size: 32px;}
-    h4{color: white;}
-
-    .field{
-        position: relative;
-        margin: 0 10%;
-        text-align: left;
-
-        input, textarea{
-            margin: 6px 0;
-            padding: 8px;
-            width: 100%;
-            max-width: 100%;
-            font-size: 19px;
-            color: white;
-            background: transparent;
-            border: none;
-            background: rgba(255, 255, 255, 0.1);
-            input{height: 40px;}
-
-            &:focus {
-                outline: 0;
-                background-color: rgba(255, 255, 255, 0.2);
-                border: none;
-            }
-        }
+    &:first-child{
+        border-top-right-radius: 0;
+        border-top-left-radius: 0;
+        border-top: none;
     }
 
-    .input-underline{
-        height: 1px; 
-        background-color: rgb(206, 214, 218);
-        background-color: $grey-1;
+    &:last-child{
+        margin-bottom: 0;
+        border-bottom-right-radius: 0;
+        border-bottom-left-radius: 0;
+        border-bottom: none;
+    }
+
+    @media (max-width: 820px){ 
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+
+    .btn{margin-top: 10px;}
+    h1{color: $grey-tlx; margin: 0; font-size: 32px;}
+
+    .txt{
+        color: $grey-tlx;
+        font-size: 18px;
+        margin-top: 20px;
+    }
+
+    .form{
+        .field{
+            position: relative;
+            margin: 0 10%;
+            text-align: left;
+
+            input, textarea{
+                margin: 2px 0;
+                padding: 8px;
+                width: 100%;
+                max-width: 100%;
+                font-size: 19px;
+                color: $grey-tlx;
+                background: transparent;
+                border: solid $grey-tlx 1px;
+                background: $grey-1;
+                input{height: 40px;}
+
+                &:focus {
+                    outline: 0;
+                    background-color: white;
+                }
+            }
+        }
     }
 }
