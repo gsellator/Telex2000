@@ -3,4 +3,4 @@
 node_modules/
 pkg/
 start.sh
-model.js
+min/

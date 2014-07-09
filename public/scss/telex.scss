@@ -1,0 +1,58 @@
+@import "variables";
+
+html {
+    width: 384px;
+}
+
+body {
+    width: 384px;
+    padding: 0px;
+    margin: 0px;
+    font-family: 'Courier New', sans-serif;
+    font-size: 20px;
+}
+
+.imghead{
+    width: 384px;
+}
+
+.container {
+    max-height: 700px;
+    overflow: hidden;
+    margin-bottom: 2px;
+    border: solid black 3px;
+
+    .date{
+        text-align: center;
+        padding: 12px 3px 12px 3px;
+        font-weight: bold;
+        background-color: black;
+        color: white;
+        border-top: dotted white 3px;
+    }
+
+    .title{
+        text-transform: uppercase;
+        padding: 6px 0 8px 0;
+        margin: 0 6px;
+        border-bottom: dashed black 1px;
+    }
+
+    .txt{
+        padding: 12px 6px;
+        font-size: 22px;
+        text-align: center;
+    }
+
+    .img{
+        padding: 8px 6px 0 6px;
+        text-align: center;
+        &.yo{padding: 16px 30px 16px 30px;}
+
+        img{
+            max-width: 100%;
+            max-height: 460px;
+        }
+    }
+}
+

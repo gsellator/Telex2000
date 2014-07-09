@@ -11,7 +11,7 @@
 
 
             <section>
-                <form class="form" name="loginForm" action="" method=POST>
+                <form class="form" name="loginForm" action="" method=POST enctype="multipart/form-data">
                     <div>
                         <h1 style="margin-bottom: 20px;">Envoyer un telex</h1>
                     </div>
@@ -35,15 +35,42 @@
                                   spellcheck="true" 
                                   autocorrect="on" 
                                   autocapitalize="on" 
-                                  maxlength="2048"></textarea>
+                                  maxlength="2048"
+                                  style="margin: 2px 0 -1px 0;"></textarea>
+                    </div>
+                    <div class="field photo">
+                        <span>Photo ?</span>
+                        <input type=file name="photo">
+                    </div>
+                    <div class="field photo">
+                        <input type="checkbox" name="private" value="true" id="private">
+                        <label for="private">Message privé ?</label>
                     </div>
                     <button type="submit" class="btn">Envoyer</button>
                 </form>
 
                 <div class="top5">
-                    <h1 style="margin-bottom: 20px;">Les 5 derniers telex</h1>
+                    <h1 style="margin-bottom: 20px;">Les derniers telex</h1>
                     <% for(var i=0; i<telexs.length; i++) {%>
-                    <div><%= telexs[i].name %> | <%= telexs[i].telex %></div>
+                    <div class="tlx-preview">
+                        <img class="imghead" src="/img/pub-1.png">
+                        <div class="container">
+                            <div class="date"><%= dateToDDMMYYYYHHMM(telexs[i].date) %> UTC</div>
+                            <div class="title">
+                                TO : PREF. DE LA COLOC<br>
+                                FM : 
+                                <% if (telexs[i].name == '') { %>
+                                unknown sender
+                                <% } else { %>
+                                <%= telexs[i].name %><br>
+                                <% } %>
+                            </div>
+                            <% if (telexs[i].fileName != '' && telexs[i].fileName != undefined) {%>
+                            <div class="img"><img src="<% domainName %>files/<%= telexs[i].fileName %>"></div>
+                            <% } %>
+                            <div class="txt"><%= telexs[i].telex %></div>
+                        </div>
+                    </div>
                     <% } %>
                 </div>
             </section>
@@ -51,16 +78,24 @@
             <section>
                 <h1>Envoyer un Yo</h1>
                 <div class="txt">
-                    Ajoutez COLOCPREF dans votre appli <a href="justyo.co">Yo</a> et lachez-vous !<br><br>
+                    Ajoutez COLOCPREF dans <a href="justyo.co">votre appli</a> et lachez vos Yo's ! 
                     Vous pouvez aussi envoyer un Yo à tous les abonnés de la coloc :
+
                 </div>
                 <a href="/yoall" class="btn">Yo !</a>
 
-                <div class="top5">
-                    <h1 style="margin-bottom: 20px;">Les 5 derniers Yo's</h1>
-                    <% for(var i=0; i<yos.length; i++) {%>
-                    <div><%= yos[i].username %></div>
+                <div>
+                    <div class="top5 yo">
+                        <h1 style="margin-bottom: 20px;">Derniers Yo's</h1>
+                        <% for(var i=0; i<yos.length; i++) {%>
+                        <div><%= yos[i].username %></div>
+                        <% } %>
+                    </div><div class="top5 yo">
+                    <h1 style="margin-bottom: 20px;">Top 5</h1>
+                    <% for(var i=0; i<topYo.length; i++) {%>
+                    <div><%= topYo[i]._id %> : <%= topYo[i].total %> Yo's</div>
                     <% } %>
+                    </div>
                 </div>
             </section>
 

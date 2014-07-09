@@ -29,10 +29,7 @@ body {
 }
 
 * {
-  font-family: 'futura-pt', sans-serif;
-  font-weight: 300;
   color: gray;
-  font-size: 18px;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
@@ -52,7 +49,7 @@ h6 {
   font-family: 'futura-pt', sans-serif;
   font-weight: 300;
   color: #3e3d40;
-  font-size: 14px;
+  font-size: 18px;
   margin: 0;
 }
 
@@ -203,10 +200,16 @@ section {
   background-color: #e5e5e5;
   max-width: 800px;
   text-align: center;
-  padding: 30px 20px;
+  padding: 30px 30px;
   margin-bottom: 40px;
   border-radius: 4px;
   border: solid #b1b1b1 1px;
+}
+
+@media (max-width: 500px) {
+  section {
+    padding: 16px 8px;
+  }
 }
 
 section:first-child {
@@ -249,7 +252,7 @@ section .form .field {
   text-align: left;
 }
 
-section .form .field input,
+section .form .field input:not([type=file]):not([type=checkbox]),
 section .form .field textarea {
   margin: 2px 0;
   padding: 8px;
@@ -262,19 +265,135 @@ section .form .field textarea {
   background: #f7f7f7;
 }
 
-section .form .field input input,
+section .form .field input:not([type=file]):not([type=checkbox]) input,
 section .form .field textarea input {
   height: 40px;
 }
 
-section .form .field input:focus,
+section .form .field input:not([type=file]):not([type=checkbox]):focus,
 section .form .field textarea:focus {
   outline: 0;
   background-color: white;
+}
+
+section .form .field.photo {
+  padding: 8px;
+  color: gray;
+  border: solid gray 1px;
+  background: #f7f7f7;
+  margin-bottom: 4px;
+}
+
+section .form .field.photo input[type=file] {
+  vertical-align: top;
+  line-height: 18px;
+  width: 74%;
 }
 
 section .top5 {
   margin-top: 20px;
   padding-top: 20px;
   border-top: solid 1px;
+}
+
+section .top5 .tab {
+  display: table;
+  margin: auto;
+}
+
+section .top5 .tab .row {
+  display: table-row;
+}
+
+section .top5 .tab .row .cell {
+  display: table-cell;
+  padding: 0 4px;
+  line-height: 24px;
+  vertical-align: top;
+}
+
+section .top5 .tab .row .cell.date {
+  width: 100px;
+  text-align: center;
+  font-family: monospace;
+  font-size: 11px;
+  line-height: 26px;
+}
+
+section .top5.yo {
+  display: inline-block;
+  vertical-align: top;
+  width: 50%;
+}
+
+@media (max-width: 500px) {
+  section .top5.yo {
+    width: 100%;
+  }
+}
+
+section .top5.yo div {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.tlx-preview {
+  width: 230px;
+  font-size: 14px;
+  display: inline-block;
+  vertical-align: top;
+  margin: 5px;
+}
+
+.tlx-preview .imghead {
+  width: 100%;
+  display: block;
+}
+
+.tlx-preview .container {
+  font-family: 'Courier New', serif;
+  max-height: 700px;
+  overflow: hidden;
+  margin-bottom: 2px;
+  border: solid black 3px;
+  background-color: white;
+}
+
+.tlx-preview .container .date {
+  text-align: center;
+  padding: 12px 3px 12px 3px;
+  font-weight: bold;
+  background-color: black;
+  color: white;
+  border-top: dotted white 3px;
+}
+
+.tlx-preview .container .title {
+  text-transform: uppercase;
+  padding: 8px 0 8px 0;
+  margin: 0 6px;
+  border-bottom: dashed black 1px;
+  text-align: left;
+}
+
+.tlx-preview .container .txt {
+  padding: 12px 6px;
+  font-size: 16px;
+  text-align: center;
+  margin-top: 0;
+}
+
+.tlx-preview .container .img {
+  padding: 8px 6px 0 6px;
+  text-align: center;
+}
+
+.tlx-preview .container .img.yo {
+  padding: 16px 30px 16px 30px;
+}
+
+.tlx-preview .container .img img {
+  max-width: 100%;
+  max-height: 460px;
 }

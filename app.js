@@ -1,7 +1,8 @@
 var express = require('express'),
     request = require('request'),
     mongoose = require('mongoose'),
-    model = require('./model');
+    model = require('./model'),
+    fs = require('fs');
 
 var uristring = 'mongodb://localhost/telex';
 
@@ -17,11 +18,39 @@ mongoose.connect(uristring, function (err, res) {
 
 // App Setup
 var app = express(),
-    fs = require('fs');
+    fs = require('fs'),
+    domainName = 'http://telex.radio97.fr/';
 
 app.set('view engine', 'ejs');
 app.use(express.static(__dirname + '/public'));
 app.use(express.bodyParser());
+
+// EJS Helpers
+var padStr = function(i) {
+    return (i < 10) ? "0" + i : "" + i;
+}
+
+app.locals.dateToDDMMYYYY = function(dte) {
+    if (dte == null)
+        return "-";
+    return padStr(dte.getDate()) + '/' + padStr(1 + dte.getMonth()) + '/' + padStr(dte.getFullYear());
+}
+
+app.locals.dateToDDMMYYYYHHMM = function(dte) {
+    if (dte == null)
+        return "-";
+    return padStr(dte.getDate()) + '/' + padStr(1 + dte.getMonth()) + '/' + padStr(dte.getFullYear()) + ' ' + 
+        padStr(dte.getHours()) + ':' + padStr(dte.getMinutes());
+}
+
+app.locals.dateToFilename = function(dte) {
+    if (dte == null)
+        return "-";
+    return padStr(dte.getDate()) + padStr(1 + dte.getMonth()) + padStr(dte.getFullYear()) +
+        padStr(dte.getHours()) + padStr(dte.getMinutes()) + padStr(dte.getSeconds());
+}
+
+
 
 //Read Little Printer direct API code in '/.printer'
 var printer = __dirname + '/.printer';
@@ -41,27 +70,51 @@ fs.readFile(printer, 'utf8', function (err, data) {
 app.get('/', function(req, res) {
     model.getTelexs(function(telexs){
         model.getYos(function(yos){
-            res.render('index.ejs', {telexs: telexs, yos: yos});
+            model.getYoRanking(function(topYo){
+                res.render('index.ejs', {telexs: telexs, yos: yos, domainName: domainName, topYo: topYo});
+            });
         });
     });
 });
 
 app.post('/', function(req, res) {
-    console.log(req.body.name);
-    console.log(req.body.telex);
-
     if (req.body.telex == "") {
         console.log('Tlx : Empty');
         res.redirect('/');
     } else {
-        var post_data = "";
+        var now = new Date(),
+            head = '<head><meta charset="utf-8"><link rel="stylesheet" href="' + domainName + 'css/telex.css"></head>',
+            title = '',
+            telexDate = '<div class="date">' + app.locals.dateToDDMMYYYYHHMM(now) + ' UTC</div>',
+            img = '',
+            telexCtnt = '<div class="txt">' + req.body.telex + '</div>',
+            fileName = '',
+            isPrivate = (req.body.private == 'true');
 
         if (req.body.name == "") {
-            post_data = 'html=<html><head><meta charset="utf-8"></head><body><h1>Telex 2000 Anonyme :</h1><p>' + req.body.telex + '</p></body></html>';
+            title = '<div class="title">TO : PREF. DE LA COLOC<br>FM : unknown sender</div>';
+        } else {
+            title = '<div class="title">TO : PREF. DE LA COLOC<br>FM : ' + req.body.name + '</div>';
         }
-        else {
-            post_data = 'html=<html><head><meta charset="utf-8"></head><body><h1>Telex 2000 de ' + req.body.name + ' :</h1><p>' + req.body.telex + '</p></body></html>';
+
+        if (req.files.photo.name != ''){
+            if (req.files.photo.type.indexOf("image") == -1){
+                console.log('Tlx : aborted | invalid image file');
+                res.redirect('/');
+                return;
+            }
+            if (req.files.photo.size > 12500000){
+                console.log('Tlx : aborted | image is too big');
+                res.redirect('/');
+                return;
+            }
+            fileName = app.locals.dateToFilename(now)+ '-' + req.files.photo.name.replace(/[^a-z0-9.]/gi, '_').toLowerCase();
+            fs.createReadStream(req.files.photo.path).pipe(fs.createWriteStream('public/files/' + fileName));
+            img = '<div class="img"><img class="dither" src="' + domainName + 'files/' + fileName + '"></div>';
         }
+
+        var post_data = 'html=<html>' + head + '<body><img class="imghead" src="' + domainName + 'img/pub-1.png"><div class="container">' + 
+            telexDate + title + img + telexCtnt + '</div></body></html>';
 
         var options = {
             url: 'http://remote.bergcloud.com/playground/direct_print/' + bergapi.toString(),
@@ -80,47 +133,75 @@ app.post('/', function(req, res) {
             }
         }
 
-        var now = new Date();
-        model.createTelex(now, req.body.name, req.body.telex, function(result){
+        model.createTelex(now, req.body.name, req.body.telex, fileName, isPrivate, function(result){
             request(options, callback);
         });
     }
 });
 
 app.get('/yoall', function(req, res) {
-    var options = {
-        url: 'http://www.justyo.co/yoall/',// + printerApiCode.toString(),
-        method: 'POST',
-        form:    { api_token: "e71d95a3-38c0-7e28-0a38-d28867ec91cd" }
-    };
-    request(options, function(error, response, body){
-        console.log('YoAll : ' + body);
+    var now = new Date();
+
+    model.createYoall(now, function(result){
+        var options = {
+            url: 'http://www.justyo.co/yoall/',// + printerApiCode.toString(),
+            method: 'POST',
+            form:    { api_token: "e71d95a3-38c0-7e28-0a38-d28867ec91cd" }
+        };
+        request(options, function(error, response, body){
+            console.log('YoAll : ' + body);
+        });
+
+        res.redirect('/');
     });
 
-    res.redirect('/');
 });
 
 app.get('/yo', function(req, res) {
     if (req.query.username != undefined){
         var now = new Date();
-        model.createYo(now, req.query.username, function(result){
-            request({
-                url: 'http://remote.bergcloud.com/playground/direct_print/' + bergapi.toString(),
-                method: 'POST',
-                body: 'html=<html><head><meta charset="utf-8"></head><body><h1>Yo From ' + req.query.username + '</h1></body></html>'
-            }, function(error, response, body) {
-                if (!error && response.statusCode == 200) {
-                    console.log('Yo : ' + body);
+        model.getLastYo('GSELLATOR', function(lastYo){
+            model.createYo(now, req.query.username, function(result){
+                // If time since last yo is smaller than 60 minutes, I don't print it
+                if (lastYo.length>0){
+                    var now = new Date();
+                    var timeDiff = Math.abs(now - lastYo[0].date)/60000; //diff en minutes
+                    if (timeDiff < 60){
+                        console.log('Yo overflow for ' + req.query.username);
+                        return;
+                    }
                 }
-                else{
-                    console.log('Yo : KO | ' + body);
-                }
+
+                var now = new Date(),
+                    head = '<head><meta charset="utf-8"><link rel="stylesheet" href="' + domainName + 'css/telex.css"></head>',
+                    title = '<div class="title">TO : PREF. DE LA COLOC<br>FM : ' + req.query.username + '</div>',
+                    telexDate = '<div class="date">' + app.locals.dateToDDMMYYYYHHMM(now) + ' UTC</div>',
+                    img = '<div class="img yo"><img src="' + domainName + 'img/yo.png"></div>';
+
+                var post_data = 'html=<html>' + head + '<body><img class="imghead" src="' + domainName + 'img/pub-1.png"><div class="container">' + 
+                    telexDate + title + img + '</div></body></html>';
+
+                request({
+                    url: 'http://remote.bergcloud.com/playground/direct_print/' + bergapi.toString(),
+                    method: 'POST',
+                    body: post_data
+                }, function(error, response, body) {
+                    if (!error && response.statusCode == 200) {
+                        console.log('Yo : ' + body);
+                    }
+                    else{
+                        console.log('Yo : KO | ' + body);
+                    }
+                });
             });
         });
     }
     res.redirect('/');
 });
 
+app.get('/test', function(req, res) {
+    res.render('test.ejs');
+});
 
 app.use(function(req, res, next){
     res.setHeader('Content-Type', 'text/plain');
