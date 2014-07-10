@@ -2,7 +2,9 @@ var express = require('express'),
     request = require('request'),
     mongoose = require('mongoose'),
     model = require('./model'),
-    fs = require('fs');
+    fs = require('fs'),
+    mmm = require('mmmagic'),
+    Magic = mmm.Magic;
 
 var uristring = 'mongodb://localhost/telex';
 
@@ -81,24 +83,44 @@ app.post('/', function(req, res) {
     if (req.body.telex == "") {
         console.log('Tlx : Empty');
         res.redirect('/');
-    } else {
-        var now = new Date(),
-            head = '<head><meta charset="utf-8"><link rel="stylesheet" href="' + domainName + 'css/telex.css"></head>',
-            title = '',
-            telexDate = '<div class="date">' + app.locals.dateToDDMMYYYYHHMM(now) + ' UTC</div>',
-            img = '',
-            telexCtnt = '<div class="txt">' + req.body.telex + '</div>',
-            fileName = '',
-            isPrivate = (req.body.private == 'true');
+        return;
+    }
 
-        if (req.body.name == "") {
-            title = '<div class="title">TO : PREF. DE LA COLOC<br>FM : unknown sender</div>';
-        } else {
-            title = '<div class="title">TO : PREF. DE LA COLOC<br>FM : ' + req.body.name + '</div>';
+    var now = new Date(),
+        head = '<head><meta charset="utf-8"><link rel="stylesheet" href="' + domainName + 'css/telex.css"></head>',
+        title = '',
+        telexDate = '<div class="date">' + app.locals.dateToDDMMYYYYHHMM(now) + ' UTC</div>',
+        img = '',
+        telexCtnt = '<div class="txt">' + req.body.telex + '</div>',
+        fileName = '',
+        isPrivate = (req.body.private == 'true'),
+        post_data = '';
+
+    function callback(error, response, body) {
+        if (!error && response.statusCode == 200) {
+            console.log('Tlx : ' + body);
+            res.redirect('/');
         }
+        else{
+            console.log('Tlx : KO | ' + body);
+            res.redirect('/');
+        }
+    }
 
-        if (req.files.photo.name != ''){
-            if (req.files.photo.type.indexOf("image") == -1){
+    if (req.body.name == "") {
+        title = '<div class="title">TO : PREF. DE LA COLOC<br>FM : unknown sender</div>';
+    } else {
+        title = '<div class="title">TO : PREF. DE LA COLOC<br>FM : ' + req.body.name + '</div>';
+    }
+
+    if (req.files.photo.name != ''){
+        var magic = new Magic(mmm.MAGIC_MIME_TYPE);
+        magic.detectFile(req.files.photo.path, function(err, mime) {
+            if (err) throw err;
+            mime = mime.split("/");
+            console.log(mime);
+
+            if (mime[0].indexOf("image") == -1){
                 console.log('Tlx : aborted | invalid image file');
                 res.redirect('/');
                 return;
@@ -108,33 +130,35 @@ app.post('/', function(req, res) {
                 res.redirect('/');
                 return;
             }
-            fileName = app.locals.dateToFilename(now)+ '-' + req.files.photo.name.replace(/[^a-z0-9.]/gi, '_').toLowerCase();
+            fileName = app.locals.dateToFilename(now)+ '-' + req.files.photo.name.replace(/[^a-z0-9]/gi, '_').toLowerCase() + '.' + mime[1];
             fs.createReadStream(req.files.photo.path).pipe(fs.createWriteStream('public/files/' + fileName));
             img = '<div class="img"><img class="dither" src="' + domainName + 'files/' + fileName + '"></div>';
-        }
 
+            var post_data = 'html=<html>' + head + '<body><img class="imghead" src="' + domainName + 'img/pub-1.png"><div class="container">' + 
+                telexDate + title + img + telexCtnt + '</div></body></html>';
+
+            console.log(post_data);
+
+            model.createTelex(now, req.body.name, req.body.telex, fileName, isPrivate, function(result){
+                request({
+                    url: 'http://remote.bergcloud.com/playground/direct_print/' + bergapi.toString(),
+                    method: 'POST',
+                    body: post_data
+                }, callback);
+            });
+        });
+    } else {
         var post_data = 'html=<html>' + head + '<body><img class="imghead" src="' + domainName + 'img/pub-1.png"><div class="container">' + 
-            telexDate + title + img + telexCtnt + '</div></body></html>';
+            telexDate + title + telexCtnt + '</div></body></html>';
 
-        var options = {
-            url: 'http://remote.bergcloud.com/playground/direct_print/' + bergapi.toString(),
-            method: 'POST',
-            body: post_data
-        };
-
-        function callback(error, response, body) {
-            if (!error && response.statusCode == 200) {
-                console.log('Tlx : ' + body);
-                res.redirect('/');
-            }
-            else{
-                console.log('Tlx : KO | ' + body);
-                res.redirect('/');
-            }
-        }
+        console.log(post_data);
 
         model.createTelex(now, req.body.name, req.body.telex, fileName, isPrivate, function(result){
-            request(options, callback);
+            request({
+                url: 'http://remote.bergcloud.com/playground/direct_print/' + bergapi.toString(),
+                method: 'POST',
+                body: post_data
+            }, callback);
         });
     }
 });
