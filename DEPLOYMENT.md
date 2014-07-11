@@ -1,5 +1,5 @@
 # Telex2000 deployment
-> This file lists the instructions I used to deploy this app on a functionning Ubuntu server
+> Instructions I used when deploying this on an Ubuntu server
 
 ## Creation of the user who will execute the app
 ```sh
@@ -42,9 +42,8 @@ sudo service nginx reload
 ```
 
 # Run the app
+```sh
 cd /home/Telex2000-prod/Telex2000/
 npm install --production
 forever start app.js
-
-
-
+```
