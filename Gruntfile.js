@@ -2,28 +2,12 @@
 module.exports = function(grunt) {
 
     grunt.initConfig({
-
         pkg: grunt.file.readJSON('package.json'),
-        banner: '/*! <%= pkg.name %> <%= grunt.template.today("dd-mm-yyyy") %> */\n',
 
+        /* Clean the folder which will recieve the file to deploy */
         clean: ["pkg/"],
 
-        env : {
-            options : {
-                /* Shared Options Hash */
-                //globalOption : 'foo'  
-            },
-            dev: {
-                NODE_ENV : 'DEVELOPMENT'
-            },
-            pre : {
-                NODE_ENV : 'PREPRODUCTION'   
-            },
-            prod : {
-                NODE_ENV : 'PRODUCTION'   
-            }
-        },
-
+        /* Update the app version in the Package.json */
         bump: {
             options: {
                 commit: false,
@@ -32,6 +16,7 @@ module.exports = function(grunt) {
             }
         },
 
+        /* Copy the needed files you will deploy */
         copy: {
             package: {
                 src: 'package.json',
@@ -59,6 +44,7 @@ module.exports = function(grunt) {
             }
         },
 
+        /* Deploy to you server */
         'sftp-deploy': {
             prod: {
                 auth: {
@@ -74,10 +60,9 @@ module.exports = function(grunt) {
     });
 
     grunt.loadNpmTasks('grunt-contrib-clean');
-    grunt.loadNpmTasks('grunt-env');
     grunt.loadNpmTasks('grunt-bump');
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-sftp-deploy');
 
-    grunt.registerTask('prod', ['env:prod', 'clean', 'bump', 'copy', 'sftp-deploy:prod']);
+    grunt.registerTask('prod', ['clean', 'bump', 'copy', 'sftp-deploy:prod']);
 };

@@ -20,9 +20,7 @@ npm install
 node app.js
 ```
 
-The result should be visible at the address http://localhost:3030/.
-
-If you want to deploy this app, have a look at the Gruntfile.
+The result should be visible at the address http://localhost:3030/. For more info about deployment, check the 'DEPLOYMENT.md' file.
 
 ## Example
 My own Little Printer is linked to the following website : http://telex.radio97.fr. You can send me 'Thank you' notes or YO me at COLOCPREF but please don't spam me too much :)

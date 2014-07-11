@@ -41,9 +41,27 @@ sudo ln -s /etc/nginx/sites-available/Telex2000-prod /etc/nginx/sites-enabled/
 sudo service nginx reload
 ```
 
-# Run the app
+## Deploy the app
+Create a file called '.ftppass' at the root of the project formated like this :
+```json
+{
+  "prod": {
+    "username": "Telex2000-prod",
+    "password": "XXXXXXXXXX"
+  }
+}
+```
+Locally, go the the root of Telex2000, install GruntJS and use it to send the code to your distant server :
+```sh
+npm install -g grunt-cli 
+grunt prod
+```
+
+
+## Run the app
 ```sh
 cd /home/Telex2000-prod/Telex2000/
+npm install forever -g 
 npm install --production
 forever start app.js
 ```
