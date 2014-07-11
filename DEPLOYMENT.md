@@ -58,7 +58,7 @@ grunt prod
 ```
 
 
-## Run the app
+## Run the app on the distant server
 ```sh
 cd /home/Telex2000-prod/Telex2000/
 npm install forever -g 
