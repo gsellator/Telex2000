@@ -42,7 +42,7 @@ sudo service nginx reload
 ```
 
 ## Deploy the app
-Create a file called '.ftppass' at the root of the project formated like this :
+Create a file called `.ftppass` at the root of the project formated like this :
 ```json
 {
   "prod": {
@@ -51,7 +51,7 @@ Create a file called '.ftppass' at the root of the project formated like this :
   }
 }
 ```
-Locally, go the the root of Telex2000, install GruntJS and use it to send the code to your distant server :
+Locally, go the the root of Telex2000, install [GruntJS](http://gruntjs.com/) and use it to send the code to your distant server :
 ```sh
 npm install -g grunt-cli 
 grunt prod
