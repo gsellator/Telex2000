@@ -2,5 +2,4 @@
 .printer
 node_modules/
 pkg/
-start.sh
 min/
