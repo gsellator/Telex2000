@@ -23,7 +23,7 @@ module.exports = function(grunt) {
                 dest: 'pkg/',
             },
             server0: {
-                src: '.printer',
+                src: '.apis',
                 dest: 'pkg/',
             },
             server1: {
@@ -40,6 +40,10 @@ module.exports = function(grunt) {
             },
             server6: {
                 src: 'model.js',
+                dest: 'pkg/',
+            },
+            server7: {
+                src: 'controllers/helpers.js',
                 dest: 'pkg/',
             }
         },

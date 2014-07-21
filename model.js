@@ -63,14 +63,6 @@ model.createTelex = function (date, name, telex, fileName, private, callback) {
     });
 };
 
-model.deleteTelex = function (id, callback) {
-    TelexModel.remove({"_id": id}, function (err, result) {
-        if (err) { throw err; }
-        callback(result);
-    });
-};
-
-
 // CRUD Yo
 model.getYos = function(callback) {
     YoModel.find()
@@ -114,13 +106,6 @@ model.createYo = function (date, username, callback) {
     });
 };
 
-model.deleteYo = function (id, callback) {
-    YoModel.remove({"_id": id}, function (err, result) {
-        if (err) { throw err; }
-        callback(result);
-    });
-};
-
 
 // CRUD Yoall
 model.getYoalls = function (callback) {
@@ -135,13 +120,6 @@ model.createYoall = function (date, callback) {
         date: date
     });
     newYoall.save(function (err, result) {
-        if (err) { throw err; }
-        callback(result);
-    });
-};
-
-model.deleteYoall = function (id, callback) {
-    YoallModel.remove({"_id": id}, function (err, result) {
         if (err) { throw err; }
         callback(result);
     });

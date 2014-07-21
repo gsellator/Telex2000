@@ -5,7 +5,7 @@
 Telex2000 is a [NodeJs](http://nodejs.org/) app which let you send messages, photos and [Yo's](http://www.justyo.co/) to a Little Printer you own without having to be logged in on BERG Cloud official system. You'll need [MongoDB](http://www.mongodb.org/) to run it.
 
 ## Berg & YO APIs
-First get the 'Direct Print API Code' of your Little Printer on [Berg Cloud's developper website](http://remote.bergcloud.com/developers/littleprinter/direct_print_codes). Then go on [Yo's website](http://developer.justyo.co/), set yourdomaine.com/yo as the callback address and collect the API Key. Finally, put those codes on the project's root folder inside a file called `.printer` formated like this :
+First get the 'Direct Print API Code' of your Little Printer on [Berg Cloud's developper website](http://remote.bergcloud.com/developers/littleprinter/direct_print_codes). Then go on [Yo's website](http://developer.justyo.co/), set yourdomaine.com/yo as the callback address and collect the API Key. Finally, put those codes on the project's root folder inside a file called `.apis` formated like this :
 ```json
 {
   "bergapi": "XXXXXXXXXXXX",
